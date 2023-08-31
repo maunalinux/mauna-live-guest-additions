@@ -1,0 +1,10 @@
+mauna-live-guest-additions (1.0.0) mauna; urgency=medium
+
+  * Initial release for Mauna Linux
+  * Add the avahi-daemon.socket as unit file at disabled
+  * When VMWare, QEMU or Virtualbox are used, all guests are disabled (enforcing)
+  * Add the extension of the unit file to uniformize the code
+  * Enforce the activation and the start of daemons when a hypervisor is detected 
+
+ -- Mauna Linux <packages@amaroklinux.org>  Wed, 16 Aug 2023 19:36:05 -0300
+

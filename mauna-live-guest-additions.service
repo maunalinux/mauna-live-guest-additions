@@ -1,0 +1,10 @@
+[Unit]
+Description=Management of guests additions services for Mauna live systems
+
+[Service]
+Type=oneshot
+Environment="PATH=/sbin:/bin:/usr/sbin:/usr/bin"
+ExecStart=/usr/share/mauna-live-guest-additions/mauna-live-guest-additions
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,16 @@
+Source: mauna-live-guest-additions
+Priority: optional
+Section: utils
+Standards-Version: 4.6.1
+Build-Depends: debhelper
+Maintainer: Mauna Linux <dev@maunalinux.top>
+Rules-Requires-Root: no
+Homepage: https://maunalinux.top
+Vcs-Git: https://github.com/maunalinux/mauna-live-guest-additions.git
+Vcs-Browser: https://github.com/maunalinux/mauna-live-guest-additions
+
+Package: mauna-live-guest-additions
+Architecture: all
+Priority: optional
+Pre-Depends: systemd
+Description: Management of guests additions services for Mauna live systems

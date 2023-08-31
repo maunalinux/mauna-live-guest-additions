@@ -1,0 +1,5 @@
+debian/mauna-live-guest-additions/
+debian/.debhelper/
+debian/debhelper-build-stamp
+debian/files
+debian/mauna-live-guest-additions.substvars

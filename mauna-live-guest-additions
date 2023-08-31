@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+if [ -x /usr/bin/systemd-detect-virt ]; then
+
+SYSTEMD_CHECK=$(systemd-detect-virt || true)
+SYS_CHECK=$(cat /sys/class/dmi/id/sys_vendor | cut -d' ' -f1)
+
+if [ $SYSTEMD_CHECK = vmware ]; then
+        echo "Hypervisor detected: $SYSTEMD_CHECK. Disable all others guests additions."
+        systemctl disable --now virtualbox-guest-utils.service spice-vdagentd.service spice-vdagentd.socket spice-webdavd.service avahi-daemon.service avahi-daemon.socket qemu-guest-agent.service
+	systemctl enable --now open-vm-tools.service vgauth.service
+
+elif [ $SYS_CHECK = innotek ]; then
+        echo "Hypervisor detected: $SYS_CHECK (VirtualBox). Disable all others guests additions."
+	systemctl disable --now open-vm-tools.service vgauth.service spice-vdagentd.service spice-vdagentd.socket spice-webdavd.service avahi-daemon.service avahi-daemon.socket qemu-guest-agent.service
+	systemctl enable --now virtualbox-guest-utils.service
+
+elif [ $SYS_CHECK = QEMU ]; then
+        echo "Hypervisor detected: $SYS_CHECK. Disable all others guests additions."
+	systemctl disable --now open-vm-tools.service vgauth.service virtualbox-guest-utils.service
+	systemctl enable --now spice-vdagentd.service spice-vdagentd.socket spice-webdavd.service avahi-daemon.service avahi-daemon.socket qemu-guest-agent.service
+
+elif [ $SYSTEMD_CHECK = microsoft ] || [ $SYSTEMD_CHECK = none ] || [ $SYSTEMD_CHECK = zvm ] || [ $SYSTEMD_CHECK = powervm ] || [ $SYSTEMD_CHECK = xen ] || [ $SYSTEMD_CHECK = bochs ] || [ $SYSTEMD_CHECK = uml ] || [ $SYSTEMD_CHECK = parallels ] || [ $SYSTEMD_CHECK = bhyve ] || [ $SYSTEMD_CHECK = qnx ] || [ $SYSTEMD_CHECK = acrn ]; then
+	echo "Not running on VMWare, VirtualBox or QEMU/KVM. All integrated guest additions will be disabled."
+	systemctl disable --now spice-vdagentd.service spice-vdagentd.socket spice-webdavd.service avahi-daemon.service avahi-daemon.socket qemu-guest-agent.service open-vm-tools.service vgauth.service virtualbox-guest-utils.service
+fi
+fi
